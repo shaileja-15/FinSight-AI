@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 FinSight AI | Your Personal Finance Co-Pilot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- Custom Dark Mode Aesthetic --- */
+
+        /* 1. Background & Fonts */
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #cbd5e1; /* Default light text color */
+            background-color: #0f172a; /* Fallback color */
+            background-image: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+        }
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            color: #f1f5f9; /* Brighter color for headings */
+        }
+
+        /* 2. Header & Main Button Styling */
+        .main-header {
+            /* Brighter gradient for dark mode */
+            background: linear-gradient(90deg, #38bdf8 0%, #818cf8 100%);
+        }
+        .main-header h1, .main-header p {
+            color: #1e293b; /* Dark text for contrast on bright header */
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #2563eb 0%, #7c3aed 100%);
+            color: white;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.25);
+        }
+        .btn-primary:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.35);
+        }
+
+        /* 3. Card Styling (Dark Glassmorphism) */
+        .card {
+            background-color: rgba(30, 41, 59, 0.7); /* Dark semi-transparent */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.25rem;
+            transition: all 0.3s ease-in-out;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            background-color: rgba(45, 55, 72, 0.7);
+        }
+
+        /* 4. Input Fields */
+        .input-field {
+            background-color: #1e293b;
+            color: #f1f5f9;
+            border: 1px solid #475569;
+            transition: all 0.2s ease-in-out;
+        }
+        .input-field::placeholder {
+            color: #64748b;
+        }
+        .input-field:focus {
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.5);
+            border-color: #60a5fa;
+            background-color: #334155;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <header class="main-header p-8 rounded-2xl shadow-2xl mb-12 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">FinSight AI</h1>
+            <p class="text-lg mt-2 font-medium">Your Personal Finance Co-Pilot for Smarter Money Decisions.</p>
+        </header>
+
+        <div class="card p-8 mb-12">
+            <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+                <svg xmlns="http://www.w.org/2000/svg" class="h-8 w-8 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                Enter Your Monthly Finances
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div>
+                    <label for="income" class="block text-sm font-medium text-slate-300 mb-1">Total Monthly Income (₹)</label>
+                    <input type="number" id="income" placeholder="e.g., 75000" class="input-field mt-1 block w-full rounded-lg shadow-sm p-3">
+                </div>
+                <div>
+                    <label for="rent" class="block text-sm font-medium text-slate-300 mb-1">Rent / Housing (₹)</label>
+                    <input type="number" id="rent" placeholder="e.g., 20000" class="input-field mt-1 block w-full rounded-lg shadow-sm p-3">
+                </div>
+                <div>
+                    <label for="emi" class="block text-sm font-medium text-slate-300 mb-1">EMI / Loans (₹)</label>
+                    <input type="number" id="emi" placeholder="e.g., 10000" class="input-field mt-1 block w-full rounded-lg shadow-sm p-3">
+                </div>
+                <div>
+                    <label for="food" class="block text-sm font-medium text-slate-300 mb-1">Food & Groceries (₹)</label>
+                    <input type="number" id="food" placeholder="e.g., 8000" class="input-field mt-1 block w-full rounded-lg shadow-sm p-3">
+                </div>
+                <div>
+                    <label for="transport" class="block text-sm font-medium text-slate-300 mb-1">Transport (₹)</label>
+                    <input type="number" id="transport" placeholder="e.g., 3000" class="input-field mt-1 block w-full rounded-lg shadow-sm p-3">
+                </div>
+                <div>
+                    <label for="shopping" class="block text-sm font-medium text-slate-300 mb-1">Shopping (₹)</label>
+                    <input type="number" id="shopping" placeholder="e.g., 5000" class="input-field mt-1 block w-full rounded-lg shadow-sm p-3">
+                </div>
+                <div>
+                    <label for="entertainment" class="block text-sm font-medium text-slate-300 mb-1">Entertainment (₹)</label>
+                    <input type="number" id="entertainment" placeholder="e.g., 2000" class="input-field mt-1 block w-full rounded-lg shadow-sm p-3">
+                </div>
+                <div>
+                    <label for="medical" class="block text-sm font-medium text-slate-300 mb-1">Medical / Health (₹)</label>
+                    <input type="number" id="medical" placeholder="e.g., 1000" class="input-field mt-1 block w-full rounded-lg shadow-sm p-3">
+                </div>
+            </div>
+            <div class="mt-8 flex justify-center items-center gap-4">
+                <button onclick="calculateAndAnalyze()" class="btn-primary font-bold py-3 px-10 rounded-full text-lg">Generate My Financial Report</button>
+                <button onclick="resetForm()" class="bg-slate-700 text-slate-200 font-bold py-3 px-6 rounded-full shadow-md text-md hover:bg-slate-600 transition">Reset</button>
+            </div>
+        </div>
+
+        <div id="results" class="hidden">
+            <h2 id="resultsHeader" class="text-4xl font-extrabold mb-8 text-center">Your Financial Snapshot</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div class="card p-6 text-center"><h3 class="text-lg font-semibold text-sky-300">Total Income</h3><p id="totalIncome" class="text-4xl font-bold text-sky-100 mt-2">₹0</p></div>
+                <div class="card p-6 text-center"><h3 class="text-lg font-semibold text-rose-300">Total Expenses</h3><p id="totalExpenses" class="text-4xl font-bold text-rose-100 mt-2">₹0</p></div>
+                <div class="card p-6 text-center"><h3 class="text-lg font-semibold text-teal-300">Net Savings</h3><p id="totalSavings" class="text-4xl font-bold text-teal-100 mt-2">₹0</p></div>
+                <div class="card p-6 text-center"><h3 class="text-lg font-semibold text-indigo-300">Savings Rate</h3><p id="savingsRate" class="text-4xl font-bold text-indigo-100 mt-2">0%</p></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="card p-6 text-center lg:col-span-1">
+                    <h3 class="text-2xl font-bold mb-4">Financial Health Score</h3>
+                    <canvas id="healthScoreChart"></canvas>
+                </div>
+                <div class="card p-6 lg:col-span-2">
+                     <h3 class="text-2xl font-bold text-center mb-4">50/30/20 Budget Analysis</h3>
+                     <div class="flex flex-col md:flex-row items-center">
+                         <div class="w-full md:w-2/3"><canvas id="budgetRuleChart"></canvas></div>
+                         <div id="budgetInsight" class="w-full md:w-1/3 p-4"></div>
+                     </div>
+                </div>
+                <div class="card p-6 lg:col-span-2">
+                    <h3 class="text-2xl font-bold text-center mb-4">Expense Breakdown</h3>
+                    <div style="height: 400px; margin: auto;"><canvas id="expenseChart"></canvas></div>
+                </div>
+                <div class="card p-6 lg:col-span-1">
+                    <h3 class="text-2xl font-bold text-center mb-4">💡 FinSight AI Recommendations</h3>
+                    <div id="recommendations" class="space-y-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set default chart colors for dark mode
+        Chart.defaults.color = '#cbd5e1';
+        Chart.defaults.borderColor = '#475569';
+
+        // Register the datalabels plugin globally
+        Chart.register(ChartDataLabels);
+
+        let expenseChartInstance, healthScoreChartInstance, budgetRuleChartInstance;
+
+        function resetForm() {
+            document.querySelectorAll('input[type=number]').forEach(input => input.value = '');
+            document.getElementById('results').classList.add('hidden');
+        }
+
+        function calculateAndAnalyze() {
+            // ... (Calculation logic remains the same) ...
+            const income = parseFloat(document.getElementById('income').value) || 0;
+            const needs = {
+                'Rent': parseFloat(document.getElementById('rent').value) || 0, 'EMI / Loans': parseFloat(document.getElementById('emi').value) || 0, 'Food': parseFloat(document.getElementById('food').value) || 0, 'Transport': parseFloat(document.getElementById('transport').value) || 0,
+            };
+            const wants = {
+                'Shopping': parseFloat(document.getElementById('shopping').value) || 0, 'Entertainment': parseFloat(document.getElementById('entertainment').value) || 0,
+            };
+            const others = {'Medical': parseFloat(document.getElementById('medical').value) || 0,};
+            if (income === 0) { alert("Please enter your total monthly income."); return; }
+            const totalNeeds = Object.values(needs).reduce((s, v) => s + v, 0);
+            const totalWants = Object.values(wants).reduce((s, v) => s + v, 0);
+            const totalOthers = Object.values(others).reduce((s, v) => s + v, 0);
+            const totalExpenses = totalNeeds + totalWants + totalOthers;
+            const savings = income - totalExpenses;
+            const savingsRate = income > 0 ? (savings / income) * 100 : 0;
+            const healthScore = calculateHealthScore(savingsRate, totalNeeds / income, totalWants / income);
+            document.getElementById('totalIncome').innerText = `₹${income.toLocaleString()}`;
+            document.getElementById('totalExpenses').innerText = `₹${totalExpenses.toLocaleString()}`;
+            document.getElementById('totalSavings').innerText = `₹${savings.toLocaleString()}`;
+            document.getElementById('savingsRate').innerText = `${savingsRate.toFixed(1)}%`;
+            const header = document.getElementById('resultsHeader');
+            if(healthScore >= 80) header.innerText = "Excellent Financial Standing! ✨";
+            else if(healthScore >= 50) header.innerText = "Good Financial Progress! 💪";
+            else header.innerText = "Key Areas for Improvement 🎯";
+            document.getElementById('results').classList.remove('hidden');
+            const allExpenses = {...needs, ...wants, ...others};
+            updateExpenseChart(allExpenses);
+            updateHealthScoreChart(healthScore);
+            updateBudgetRuleChart(totalNeeds, totalWants, savings, income);
+            generateRecommendations(income, totalExpenses, allExpenses, savingsRate);
+        }
+
+        function calculateHealthScore(savingsRate, needsRatio, wantsRatio) {
+            let score = 0;
+            score += Math.min(50, Math.max(0, savingsRate * 2.5)); 
+            score += Math.max(0, 30 * (1 - Math.max(0, needsRatio - 0.5)));
+            score += Math.max(0, 20 * (1 - Math.max(0, wantsRatio - 0.3)));
+            return Math.round(score);
+        }
+        
+        function updateExpenseChart(expenses) {
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            const labels = Object.keys(expenses).filter(k => expenses[k] > 0);
+            const data = Object.values(expenses).filter(v => v > 0);
+            const totalExpenses = data.reduce((a, b) => a + b, 0);
+            
+            if (expenseChartInstance) expenseChartInstance.destroy();
+            expenseChartInstance = new Chart(ctx, { 
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        // Vibrant colors for dark mode
+                        backgroundColor: ['#f43f5e', '#f97316', '#facc15', '#38bdf8', '#a78bfa', '#f471b5', '#2dd4bf'],
+                        borderColor: '#1e293b', // Match dark card background
+                        borderWidth: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 40,
+                            bottom: 40,
+                            left: 20,
+                            right: 20
+                        }
+                    },
+                    plugins: { 
+                        legend: { display: false }, 
+                        tooltip: { 
+                            callbacks: { 
+                                label: (c) => `${c.label}: ₹${c.raw.toLocaleString()} (${((c.raw/totalExpenses)*100).toFixed(1)}%)` 
+                            } 
+                        },
+                        datalabels: { // ** THIS IS THE "PERFECT" STYLE FROM YOUR IMAGE **
+                            formatter: (value, ctx) => {
+                                const percentage = (value / totalExpenses * 100).toFixed(1);
+                                const label = ctx.chart.data.labels[ctx.dataIndex];
+                                return `${label}\n${percentage}%`;
+                            },
+                            color: '#e2e8f0', // Light text for dark mode
+                            anchor: 'end',
+                            align: 'end',
+                            offset: 15,
+                            borderColor: '#475569', // Dark mode border
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            backgroundColor: '#1e293b', // Dark mode background
+                            font: { weight: '600' },
+                            padding: 6,
+                            textAlign: 'center'
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateHealthScoreChart(score) {
+            const ctx = document.getElementById('healthScoreChart').getContext('2d');
+            if (healthScoreChartInstance) healthScoreChartInstance.destroy();
+            healthScoreChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [score, 100 - score],
+                        backgroundColor: [score >= 80 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444', '#334155'],
+                        borderColor: '#1e293b',
+                        borderWidth: 4,
+                        circumference: 180,
+                        rotation: 270,
+                    }]
+                },
+                options: { responsive: true, cutout: '70%', plugins: { tooltip: { enabled: false }, legend: { display: false } } },
+                plugins: [{
+                    id: 'gaugeText',
+                    beforeDraw(chart) {
+                        const { width, height, ctx } = chart;
+                        ctx.restore();
+                        const fontSize = (height / 100).toFixed(2);
+                        ctx.font = `bold ${fontSize}em Poppins, sans-serif`;
+                        ctx.textBaseline = 'middle';
+                        const text = `${score}`;
+                        const textX = Math.round((width - ctx.measureText(text).width) / 2);
+                        const textY = height / 1.5;
+                        ctx.fillStyle = score >= 80 ? '#34d399' : score >= 50 ? '#fbbF24' : '#f87171';
+                        ctx.fillText(text, textX, textY);
+                        ctx.save();
+                    }
+                }]
+            });
+        }
+
+        function updateBudgetRuleChart(needs, wants, savings, income) {
+             const ctx = document.getElementById('budgetRuleChart').getContext('2d');
+             const needsPerc = (needs / income) * 100;
+             const wantsPerc = (wants / income) * 100;
+             const savingsPerc = Math.max(0, (savings / income) * 100);
+             if (budgetRuleChartInstance) budgetRuleChartInstance.destroy();
+             budgetRuleChartInstance = new Chart(ctx, {
+                 type: 'bar',
+                 data: {
+                     labels: ['Your Budget', 'Ideal Budget'],
+                     datasets: [
+                         { label: 'Needs', data: [needsPerc, 50], backgroundColor: '#3b82f6', barThickness: 40 },
+                         { label: 'Wants', data: [wantsPerc, 30], backgroundColor: '#a855f7', barThickness: 40 },
+                         { label: 'Savings', data: [savingsPerc, 20], backgroundColor: '#10b981', barThickness: 40 },
+                     ]
+                 },
+                 options: {
+                     indexAxis: 'y', responsive: true, 
+                     scales: { 
+                        x: { stacked: true, max: 100, grid: { color: '#334155' }, ticks: { callback: value => value + "%" } }, 
+                        y: { stacked: true, grid: { display: false } } 
+                     },
+                     plugins: { legend: { position: 'bottom', labels: { color: '#cbd5e1' } }, tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.raw.toFixed(1)}%` } } }
+                 }
+             });
+             
+             const insightDiv = document.getElementById('budgetInsight');
+             let insightHTML = '';
+             if (savingsPerc >= 20) {
+                 insightHTML += `<div class="p-2 rounded-lg flex items-start gap-2 text-green-200 bg-green-500/10"><span class="text-lg">✅</span><p class="text-sm"><b>Excellent Savings:</b> Your savings rate is above the 20% goal. Keep it up!</p></div>`;
+             } else {
+                 insightHTML += `<div class="p-2 rounded-lg flex items-start gap-2 text-yellow-200 bg-yellow-500/10"><span class="text-lg">⚠️</span><p class="text-sm"><b>Improve Savings:</b> Your savings are below 20%. Look for areas to cut back.</p></div>`;
+             }
+             if (wantsPerc > 30) {
+                 insightHTML += `<div class="p-2 mt-2 rounded-lg flex items-start gap-2 text-purple-300 bg-purple-500/10"><span class="text-lg">💡</span><p class="text-sm"><b>High 'Wants':</b> Your spending on wants is over the 30% guideline. This is a key area to reduce.</p></div>`;
+             }
+             insightDiv.innerHTML = insightHTML;
+        }
+        
+        function generateRecommendations(income, totalExpenses, expenses, savingsRate) {
+            const recommendationsDiv = document.getElementById('recommendations');
+            recommendationsDiv.innerHTML = '';
+            let recommendations = [];
+            
+            if (savingsRate >= 20) {
+                recommendations.push({ type: 'success', text: `Stellar work! Your savings rate of ${savingsRate.toFixed(1)}% is excellent and puts you on a great path.` });
+            } else if (savingsRate >= 10) {
+                recommendations.push({ type: 'warning', text: `You're on the right track with a ${savingsRate.toFixed(1)}% savings rate. A few small tweaks could get you to the 20% goal.` });
+            } else {
+                recommendations.push({ type: 'error', text: `Immediate action needed. Your savings rate is ${savingsRate.toFixed(1)}%. Let's find areas to improve.` });
+            }
+
+            const needsPerc = ((expenses['Rent'] + expenses['EMI / Loans'] + expenses['Food'] + expenses['Transport']) / income) * 100;
+            if (needsPerc > 50) {
+                recommendations.push({ type: 'insight', text: `Your 'Needs' are at ${needsPerc.toFixed(0)}% of your income, which is higher than the recommended 50%. This limits your flexibility.` });
+            }
+
+            let highestExpenseCategory = '';
+            let highestExpenseValue = 0;
+            const discretionary = {'Shopping': expenses['Shopping'], 'Entertainment': expenses['Entertainment']};
+            for (const category in discretionary) {
+                if (discretionary[category] > highestExpenseValue) { highestExpenseValue = discretionary[category]; highestExpenseCategory = category; }
+            }
+            if (highestExpenseValue > 0.15 * income) {
+                 const reductionAmount = highestExpenseValue * 0.2;
+                 recommendations.push({ type: 'insight', text: `Your highest discretionary spend is '${highestExpenseCategory}'. Reducing it by just 20% could save you ₹${reductionAmount.toLocaleString()} per month.` });
+            }
+
+            recommendations.forEach(rec => {
+                let colorClass = ''; let icon = '';
+                if (rec.type === 'success') { colorClass = 'text-green-200 bg-green-900/50'; icon = '✅'; }
+                else if (rec.type === 'warning') { colorClass = 'text-yellow-200 bg-yellow-900/50'; icon = '⚠️'; }
+                else if (rec.type === 'error') { colorClass = 'text-red-200 bg-red-900/50'; icon = '❌'; }
+                else { colorClass = 'text-blue-200 bg-blue-900/50'; icon = '💡'; }
+                recommendationsDiv.innerHTML += `<div class="p-4 rounded-lg flex items-start gap-3 ${colorClass} border border-white/10"><span class="text-xl">${icon}</span> <p>${rec.text}</p></div>`;
+            });
+        }
+    </script>
+</body>
+</html>
