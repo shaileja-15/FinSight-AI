@@ -4,7 +4,7 @@ A smart, interactive finance dashboard to help you visualize and understand your
 
 ## 🚀 Live Demo
 
-[👉 Click here to try it out!](https://shailja-15.github.io/FinSight-AI/)
+[👉 Click here to try it out!](https://shaileja-15.github.io/finsight-ai/)
 
 ## ✨ Features
 
